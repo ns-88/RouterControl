@@ -7,6 +7,8 @@ using Prism.Ioc;
 using RouterControl.Infrastructure.Constants;
 using RouterControl.Infrastructure.Factories;
 using RouterControl.Interfaces.Infrastructure.Factories;
+using RouterControl.Interfaces.Services;
+using RouterControl.Services;
 using RouterControl.ViewModels;
 using RouterControl.Views;
 
@@ -18,12 +20,16 @@ namespace RouterControl
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            // AdonisDialogHostWindow
+            containerRegistry.RegisterDialogWindow<AdonisDialogHostWindow>();
             // CommandExecutionProcessView
             containerRegistry.RegisterDialog<CommandExecutionProcessView, CommandExecutionViewModel>(UiConstants.CommandExecutionView);
             // IApiFactory
             containerRegistry.RegisterSingleton<IApiFactory, MicrotikApiFactory>();
             // IRouterControlServiceFactory
             containerRegistry.Register<IRouterControlServiceFactory, RouterControlServiceFactory>();
+            // INotificationService
+            containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
         }
 
         protected override Window CreateShell()

@@ -67,7 +67,7 @@ namespace RouterControl.Services
 
                     //Подключение к роутеру.
                     progress.Report("Подключение к роутеру...");
-
+                    
                     try
                     {
                         await connection.ConnectAsync().ConfigureAwait(false);
@@ -98,7 +98,7 @@ namespace RouterControl.Services
                     }
 
                     progress.Report("Аутентификация выполнена.");
-
+                    
                     //Выполнение команды.
                     var cmdArg = enable ? "false" : "true";
 
@@ -124,7 +124,7 @@ namespace RouterControl.Services
 
                     //Выход из системы.
                     progress.Report("Выход из системы...");
-
+                    
                     try
                     {
                         await routerApi.QuitAsync().ConfigureAwait(false);

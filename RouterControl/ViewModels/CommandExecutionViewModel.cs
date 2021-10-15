@@ -2,8 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Prism.Services.Dialogs;
+using RouterControl.Infrastructure.Enums;
 using RouterControl.Infrastructure.Utilities;
 using RouterControl.Interfaces.Infrastructure.Factories;
+using RouterControl.Interfaces.Services;
 using RouterControl.Interfaces.Strategies;
 using RouterControl.Models;
 
@@ -12,12 +14,16 @@ namespace RouterControl.ViewModels
     internal class CommandExecutionViewModel : DialogViewModelBase
     {
         private readonly IRouterControlServiceFactory _routerControlServiceFactory;
+        private readonly INotificationService _notificationService;
+
         public ObservableCollection<LogEntryModel> CommandLog { get; }
 
-        public CommandExecutionViewModel(IRouterControlServiceFactory routerControlServiceFactory)
+        public CommandExecutionViewModel(IRouterControlServiceFactory routerControlServiceFactory, INotificationService notificationService)
             : base(string.Empty)
         {
             Guard.ThrowIfNull(routerControlServiceFactory, out _routerControlServiceFactory, nameof(routerControlServiceFactory));
+            Guard.ThrowIfNull(notificationService, out _notificationService, nameof(notificationService));
+
             CommandLog = new ObservableCollection<LogEntryModel>();
         }
 
@@ -31,9 +37,9 @@ namespace RouterControl.ViewModels
             {
                 await strategy.InvokeAsync(routerControlService, progress);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                _notificationService.Notify(ex.Message, "Ошибка выполнения команды", notificationImage: NotificationImages.Error);
             }
 
             await Task.Delay(3000);
