@@ -4,6 +4,11 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                        xmlns:controls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+                       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                       xmlns:behaviors="clr-namespace:RouterControl.Infrastructure.Behaviors"
                        mc:Ignorable="d"
                        Title="{Binding Title, Mode=OneWay}">
+    <i:Interaction.Behaviors>
+        <behaviors:WindowActiveChangedBehavior/>
+    </i:Interaction.Behaviors>
 </controls:AdonisWindow>

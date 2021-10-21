@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using AdonisUI.Controls;
 using RouterControl.Infrastructure.Enums;
 using RouterControl.Interfaces.Services;
 using MessageBox = AdonisUI.Controls.MessageBox;
@@ -65,14 +66,15 @@ namespace RouterControl.Services
             NotificationImages notificationImage = NotificationImages.None)
         {
             var dispatcher = Dispatcher.CurrentDispatcher;
-            var activeWindow = Application.Current?.Windows.OfType<Window>().FirstOrDefault();
+            var activeWindow = Application.Current?.Windows.OfType<AdonisWindow>()
+                                                           .FirstOrDefault(x => x.IsLoaded);
 
             return dispatcher.Invoke(() =>
             {
                 var messageBoxButton = GetMessageBoxButton(notificationButton);
                 var messageBoxImage = GetMessageBoxImage(notificationImage);
 
-                var result = activeWindow != null 
+                var result = activeWindow != null
                     ? MessageBox.Show(activeWindow, text, caption, messageBoxButton, messageBoxImage)
                     : MessageBox.Show(text, caption, messageBoxButton, messageBoxImage);
 

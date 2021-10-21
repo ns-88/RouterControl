@@ -23,14 +23,14 @@ namespace RouterControl.ViewModels
         {
             Guard.ThrowIfNull(dialogService, out _dialogService, nameof(dialogService));
 
-            _commandManager = new CommandManager(true, RaiseCanExecuteChangedCommands);
+            _commandManager = new CommandManager(true, RaiseCanExecuteCommands);
 
             EnableConnectionCommand = new DelegateCommand(EnableConnectionHandler, _commandManager.CanExecuteCommand);
             DisableConnectionCommand = new DelegateCommand(DisableConnectionHandler, _commandManager.CanExecuteCommand);
             SettingsCommand = new DelegateCommand(SettingsHandler, _commandManager.CanExecuteCommand);
         }
 
-        private void RaiseCanExecuteChangedCommands()
+        private void RaiseCanExecuteCommands()
         {
             EnableConnectionCommand.RaiseCanExecuteChanged();
             DisableConnectionCommand.RaiseCanExecuteChanged();
@@ -57,7 +57,10 @@ namespace RouterControl.ViewModels
 
         private void SettingsHandler()
         {
-
+            using (_commandManager.GetCommandHelper(false))
+            {
+                _dialogService.ShowDialog(UiConstants.SettingsView);
+            }
         }
 
         #region Nested types

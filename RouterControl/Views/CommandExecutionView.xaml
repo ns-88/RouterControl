@@ -19,9 +19,8 @@
         </Style>
     </prism:Dialog.WindowStyle>
 
-    <Grid>
+    <Grid Margin="5">
         <DataGrid ItemsSource="{Binding CommandLog, Mode=OneWay}"
-                  Margin="5"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"

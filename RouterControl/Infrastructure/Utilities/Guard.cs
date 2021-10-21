@@ -6,20 +6,20 @@ namespace RouterControl.Infrastructure.Utilities
     internal static class Guard
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowIfNull<T>(T source, out T target, string paramName) where T : class
+        public static void ThrowIfNull<T>(T source, out T target, string paramName)
         {
             target = source ?? throw new ArgumentNullException(paramName);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ThrowIfNull<T>(T source, string paramName) where T : class
+        public static void ThrowIfNull<T>(T source, string paramName)
         {
             if (source == null)
                 throw new ArgumentNullException(paramName);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T ThrowIfNullRet<T>(T source, string paramName) where T : class
+        public static T ThrowIfNullRet<T>(T source, string paramName)
         {
             if (source == null)
                 throw new ArgumentNullException(paramName);
