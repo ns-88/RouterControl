@@ -2,6 +2,7 @@
 {
     internal static class UiConstants
     {
-        public static string CommandExecutionView = "CommandExecution";
+        public static string CommandExecutionView = "CommandExecutionView";
+        public static string SettingsView = "SettingsView";
     }
 }
