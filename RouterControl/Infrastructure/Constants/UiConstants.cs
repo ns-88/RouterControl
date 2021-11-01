@@ -2,7 +2,8 @@
 {
     internal static class UiConstants
     {
-        public static string CommandExecutionView = "CommandExecutionView";
-        public static string SettingsView = "SettingsView";
+        public static string CommandExecutionViewName = "CommandExecutionView";
+        public static string SettingsViewName = "SettingsView";
+        public static string TaskbarIconSystemTrayName = "TaskbarIconSystemTray";
     }
 }

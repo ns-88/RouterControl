@@ -1,8 +1,8 @@
 ﻿namespace RouterControl.Views
 {
-    public partial class CommandExecutionProcessView
+    public partial class CommandExecutionView
     {
-        public CommandExecutionProcessView()
+        public CommandExecutionView()
         {
             InitializeComponent();
         }

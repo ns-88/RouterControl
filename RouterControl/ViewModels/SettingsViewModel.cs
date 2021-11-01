@@ -106,6 +106,18 @@ namespace RouterControl.ViewModels
         }
         #endregion
 
+        #region IsApplicationAutorun
+        public bool IsApplicationAutorun
+        {
+            get => _settingsModel.IsApplicationAutorun;
+            set
+            {
+                _settingsModel.IsApplicationAutorun = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         private void RaiseCanExecuteCommand()
         {
             SaveCommand.RaiseCanExecuteChanged();
@@ -144,6 +156,7 @@ namespace RouterControl.ViewModels
             yield return nameof(RouterPort);
             yield return nameof(PppoeInterface);
             yield return nameof(EthernetInterface);
+            yield return nameof(IsApplicationAutorun);
         }
 
         protected override void OnViewOpened()

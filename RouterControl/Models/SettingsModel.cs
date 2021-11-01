@@ -20,6 +20,7 @@ namespace RouterControl.Models
         public string RouterPort { get; set; }
         public string PppoeInterface { get; set; }
         public string EthernetInterface { get; set; }
+        public bool IsApplicationAutorun { get; set; }
         ReadOnlyMemory<byte> IProgramSettings.UserPassword => _userPasswordCipher;
         IPEndPoint IProgramSettings.RouterAddress => _routerAddress;
         INetworkInterfaces IProgramSettings.NetworkInterfaces => _networkInterfaces;
@@ -28,13 +29,15 @@ namespace RouterControl.Models
         private SettingsModel(string userName,
                               ReadOnlyMemory<byte> userPassword,
                               IPEndPoint routerAddress,
-                              INetworkInterfaces networkInterfaces)
+                              INetworkInterfaces networkInterfaces,
+                              bool isApplicationAutorun)
         {
             _userPasswordCipher = userPassword;
             _routerAddress = routerAddress;
             _networkInterfaces = networkInterfaces;
 
             UserName = userName;
+            IsApplicationAutorun = isApplicationAutorun;
         }
 
         #region UserPassword
@@ -65,6 +68,7 @@ namespace RouterControl.Models
                 RouterPort = settings.RouterAddress.Port.ToString();
                 PppoeInterface = settings.NetworkInterfaces.PppoeInterface;
                 EthernetInterface = settings.NetworkInterfaces.EtherInterface;
+                IsApplicationAutorun = settings.IsApplicationAutorun;
             }
             catch
             {
@@ -81,7 +85,7 @@ namespace RouterControl.Models
             var networkInterfaces = new NetworkInterfacesModel(PppoeInterface, EthernetInterface);
             var userPassword = _userPasswordHelper.GetCipher();
 
-            return new SettingsModel(UserName, userPassword, routerAddress, networkInterfaces);
+            return new SettingsModel(UserName, userPassword, routerAddress, networkInterfaces, IsApplicationAutorun);
         }
 
         public bool CheckModel()

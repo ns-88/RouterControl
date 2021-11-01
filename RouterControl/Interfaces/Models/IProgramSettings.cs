@@ -9,5 +9,6 @@ namespace RouterControl.Interfaces.Models
         ReadOnlyMemory<byte> UserPassword { get; }
         IPEndPoint RouterAddress { get; }
         INetworkInterfaces NetworkInterfaces { get; }
+        bool IsApplicationAutorun { get; }
     }
 }
