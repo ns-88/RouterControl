@@ -41,7 +41,7 @@ namespace RouterControl.ViewModels
         {
             using (_commandManager.GetCommandHelper(false))
             {
-                _dialogService.ShowDialog(UiConstants.CommandExecutionView, nameof(ICommandExecutionStrategy),
+                _dialogService.ShowDialog(UiConstants.CommandExecutionViewName, nameof(ICommandExecutionStrategy),
                     new EnableConCmdExecutionStrategy());
             }
         }
@@ -50,7 +50,7 @@ namespace RouterControl.ViewModels
         {
             using (_commandManager.GetCommandHelper(false))
             {
-                _dialogService.ShowDialog(UiConstants.CommandExecutionView, nameof(ICommandExecutionStrategy),
+                _dialogService.ShowDialog(UiConstants.CommandExecutionViewName, nameof(ICommandExecutionStrategy),
                     new DisableConCmdExecutionStrategy());
             }
         }
@@ -59,7 +59,7 @@ namespace RouterControl.ViewModels
         {
             using (_commandManager.GetCommandHelper(false))
             {
-                _dialogService.ShowDialog(UiConstants.SettingsView);
+                _dialogService.ShowDialog(UiConstants.SettingsViewName);
             }
         }
 

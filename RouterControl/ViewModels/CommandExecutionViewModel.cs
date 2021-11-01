@@ -17,7 +17,7 @@ namespace RouterControl.ViewModels
         private readonly INotificationService _notificationService;
 
         public ObservableCollection<LogEntryModel> CommandLog { get; }
-
+        
         public CommandExecutionViewModel(IRouterControlServiceFactory routerControlServiceFactory, INotificationService notificationService)
             : base(string.Empty)
         {
@@ -27,11 +27,24 @@ namespace RouterControl.ViewModels
             CommandLog = new ObservableCollection<LogEntryModel>();
         }
 
+        #region ProgressValue
+        private int _progressValue;
+        public int ProgressValue
+        {
+            get => _progressValue;
+            private set => SetProperty(ref _progressValue, value);
+        }
+        #endregion
+
         public override async void OnDialogOpened(IDialogParameters parameters)
         {
             var strategy = parameters.GetValue<ICommandExecutionStrategy>(nameof(ICommandExecutionStrategy));
             var routerControlService = _routerControlServiceFactory.Create();
-            var progress = new Progress<string>(x => CommandLog.Add(new LogEntryModel(x, DateTime.Now)));
+            var progress = new Progress<string>(x =>
+            {
+                CommandLog.Add(new LogEntryModel(x, DateTime.Now));
+                ProgressValue++;
+            });
 
             try
             {
@@ -42,7 +55,7 @@ namespace RouterControl.ViewModels
                 _notificationService.Notify(ex.Message, "Ошибка выполнения команды", notificationImage: NotificationImages.Error);
             }
 
-            await Task.Delay(3000);
+            await Task.Delay(2000);
 
             RaiseRequestClose(new DialogResult());
         }
