@@ -10,6 +10,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="Infrastructure\Resources\Icons\ConnectionOff.ico" />
+		<None Remove="Infrastructure\Resources\Icons\ConnectionOn.ico" />
 		<None Remove="Infrastructure\Resources\Icons\NetDrives.ico" />
 	</ItemGroup>
 
@@ -26,6 +28,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Resource Include="Infrastructure\Resources\Icons\ConnectionOn.ico" />
+		<Resource Include="Infrastructure\Resources\Icons\ConnectionOff.ico" />
 		<Resource Include="Infrastructure\Resources\Icons\NetDrives.ico" />
 	</ItemGroup>
 

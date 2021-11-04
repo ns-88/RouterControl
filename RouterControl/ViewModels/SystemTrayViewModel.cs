@@ -30,6 +30,19 @@ namespace RouterControl.ViewModels
             SettingsCommand = new DelegateCommand(SettingsHandler, _commandManager.CanExecuteCommand);
         }
 
+        #region IsConnected
+        private bool _isConnected;
+        public bool IsConnected
+        {
+            get => _isConnected;
+            private set
+            {
+                _isConnected = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         private void RaiseCanExecuteCommands()
         {
             EnableConnectionCommand.RaiseCanExecuteChanged();
@@ -37,12 +50,20 @@ namespace RouterControl.ViewModels
             SettingsCommand.RaiseCanExecuteChanged();
         }
 
+        private void CallbackHandler(IDialogResult dialogResult)
+        {
+            var connected = dialogResult.Parameters.GetValue<bool?>(UiConstants.CommandExecutionResultName);
+
+            if (connected.HasValue)
+                IsConnected = (bool)connected;
+        }
+
         private void EnableConnectionHandler()
         {
             using (_commandManager.GetCommandHelper(false))
             {
                 _dialogService.ShowDialog(UiConstants.CommandExecutionViewName, nameof(ICommandExecutionStrategy),
-                    new EnableConCmdExecutionStrategy());
+                    new ConCmdExecutionStrategy(true), CallbackHandler);
             }
         }
 
@@ -51,7 +72,7 @@ namespace RouterControl.ViewModels
             using (_commandManager.GetCommandHelper(false))
             {
                 _dialogService.ShowDialog(UiConstants.CommandExecutionViewName, nameof(ICommandExecutionStrategy),
-                    new DisableConCmdExecutionStrategy());
+                    new ConCmdExecutionStrategy(false), CallbackHandler);
             }
         }
 

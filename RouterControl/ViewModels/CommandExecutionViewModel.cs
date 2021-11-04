@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Prism.Services.Dialogs;
+using RouterControl.Infrastructure.Constants;
 using RouterControl.Infrastructure.Enums;
+using RouterControl.Infrastructure.Extensions;
 using RouterControl.Infrastructure.Utilities;
 using RouterControl.Interfaces.Infrastructure.Factories;
 using RouterControl.Interfaces.Services;
@@ -38,6 +40,7 @@ namespace RouterControl.ViewModels
 
         public override async void OnDialogOpened(IDialogParameters parameters)
         {
+            bool? connected = null;
             var strategy = parameters.GetValue<ICommandExecutionStrategy>(nameof(ICommandExecutionStrategy));
             var routerControlService = _routerControlServiceFactory.Create();
             var progress = new Progress<string>(x =>
@@ -49,6 +52,7 @@ namespace RouterControl.ViewModels
             try
             {
                 await strategy.InvokeAsync(routerControlService, progress);
+                connected = strategy.IsEnabled;
             }
             catch (Exception ex)
             {
@@ -57,7 +61,7 @@ namespace RouterControl.ViewModels
 
             await Task.Delay(2000);
 
-            RaiseRequestClose(new DialogResult());
+            RaiseRequestClose(new DialogResult().WithParameter(UiConstants.CommandExecutionResultName, connected));
         }
     }
 }

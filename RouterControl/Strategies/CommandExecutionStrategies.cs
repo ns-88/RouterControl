@@ -5,19 +5,15 @@ using RouterControl.Interfaces.Strategies;
 
 namespace RouterControl.Strategies
 {
-    internal class EnableConCmdExecutionStrategy : ICommandExecutionStrategy
+    internal class ConCmdExecutionStrategy : ICommandExecutionStrategy
     {
-        public Task InvokeAsync(IRouterControlService routerControlService, IProgress<string> progress)
-        {
-            return routerControlService.ChangeConnectionStateAsync(true, progress);
-        }
-    }
+        public bool IsEnabled { get; }
 
-    internal class DisableConCmdExecutionStrategy : ICommandExecutionStrategy
-    {
+        public ConCmdExecutionStrategy(bool enable) => IsEnabled = enable;
+
         public Task InvokeAsync(IRouterControlService routerControlService, IProgress<string> progress)
         {
-            return routerControlService.ChangeConnectionStateAsync(false, progress);
+            return routerControlService.ChangeConnectionStateAsync(IsEnabled, progress);
         }
     }
 }
