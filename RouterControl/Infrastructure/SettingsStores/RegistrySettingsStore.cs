@@ -119,7 +119,7 @@ namespace RouterControl.Infrastructure.SettingsStores
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Не удалось удалить значение. Ключ реестра: \"{collectionName}\", свойство: \"{propertyName}\".", ex);
+                throw new InvalidOperationException($"Не удалось удалить значение. Ключ реестра: \"{collectionName}\", свойство: \"{propertyName}\".\r\nОшибка: {ex.Message}", ex);
             }
         }
         #endregion

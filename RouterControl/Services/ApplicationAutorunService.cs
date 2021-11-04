@@ -19,6 +19,9 @@ namespace RouterControl.Services
 
         public void OnNext(ISettingsItem value)
         {
+            const string collectionName = "Run";
+            const string propertyName = "RouterControl";
+
             try
             {
                 var factory = new RegistryRootKeyFactory(@"Software\Microsoft\Windows\CurrentVersion", true);
@@ -28,9 +31,14 @@ namespace RouterControl.Services
                     throw new InvalidOperationException($"Объект настроек имеет тип отличный от ожидаемого. Ожидаемый тип: \"{nameof(IProgramSettings)}\", текущий: \"{value.GetType().Name}\"");
 
                 if (settings.IsApplicationAutorun)
-                    store.SetStringValue($"{GetBaseDirectory()}RouterControl.exe", "Run", "RouterControl");
+                {
+                    store.SetStringValue($"{GetBaseDirectory()}RouterControl.exe", collectionName, propertyName);
+                }
                 else
-                    store.DeleteProperty("Run", "RouterControl");
+                {
+                    if (store.PropertyExists(collectionName, propertyName))
+                        store.DeleteProperty(collectionName, propertyName);
+                }
             }
             catch (Exception ex)
             {
