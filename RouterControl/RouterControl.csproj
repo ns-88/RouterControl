@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<Platforms>x64</Platforms>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Infrastructure\Resources\Icons\ConnectionOff.ico" />
+		<None Remove="Infrastructure\Resources\Icons\ConnectionOn.ico" />
+		<None Remove="Infrastructure\Resources\Icons\NetDrives.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+		<PackageReference Include="MikroTikMiniApi" Version="1.0.2" />
+		<PackageReference Include="Prism.Unity" Version="8.1.97" />
+		<PackageReference Include="Prism.Wpf" Version="8.1.97" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Infrastructure\Resources\Icons\ConnectionOn.ico" />
+		<Resource Include="Infrastructure\Resources\Icons\ConnectionOff.ico" />
+		<Resource Include="Infrastructure\Resources\Icons\NetDrives.ico" />
+	</ItemGroup>
+
+</Project>
