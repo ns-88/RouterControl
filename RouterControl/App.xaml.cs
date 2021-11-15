@@ -74,12 +74,6 @@ namespace RouterControl
                 base.OnStartup(e);
 
                 _settingsEventTracker = Container.Resolve<ISettingsEventTracker>();
-                _taskbarIcon = (TaskbarIcon?)FindResource(UiConstants.TaskbarIconSystemTrayName);
-
-                if (_taskbarIcon == null)
-                    throw new InvalidOperationException($"Элемент управления с именем \"{UiConstants.TaskbarIconSystemTrayName}\" не найден.");
-
-                _taskbarIcon.DataContext = Container.Resolve<SystemTrayViewModel>();
 
                 var settingsService = Container.Resolve<ISettingsService>();
                 var appAutorunService = Container.Resolve<ApplicationAutorunService>();
@@ -87,6 +81,13 @@ namespace RouterControl
                 _settingsEventTracker.Register(nameof(IProgramSettings), appAutorunService);
 
                 settingsService.LoadSettings();
+
+                _taskbarIcon = (TaskbarIcon?)FindResource(UiConstants.TaskbarIconSystemTrayName);
+
+                if (_taskbarIcon == null)
+                    throw new InvalidOperationException($"Элемент управления с именем \"{UiConstants.TaskbarIconSystemTrayName}\" не найден.");
+
+                _taskbarIcon.DataContext = Container.Resolve<SystemTrayViewModel>();
             }
             catch (Exception ex)
             {
