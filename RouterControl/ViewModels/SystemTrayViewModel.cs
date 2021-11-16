@@ -3,8 +3,11 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using RouterControl.Infrastructure.Constants;
+using RouterControl.Infrastructure.Enums;
 using RouterControl.Infrastructure.Extensions;
 using RouterControl.Infrastructure.Utilities;
+using RouterControl.Interfaces.Infrastructure.Factories;
+using RouterControl.Interfaces.Services;
 using RouterControl.Interfaces.Strategies;
 using RouterControl.Strategies;
 
@@ -12,6 +15,7 @@ namespace RouterControl.ViewModels
 {
     internal class SystemTrayViewModel : BindableBase
     {
+        private readonly INotificationService _notificationService;
         private readonly IDialogService _dialogService;
         private readonly CommandManager _commandManager;
 
@@ -19,15 +23,21 @@ namespace RouterControl.ViewModels
         public DelegateCommand DisableConnectionCommand { get; }
         public DelegateCommand SettingsCommand { get; }
 
-        public SystemTrayViewModel(IDialogService dialogService)
+        public SystemTrayViewModel(IRouterControlServiceFactory routerControlServiceFactory,
+                                   INotificationService notificationService,
+                                   IDialogService dialogService)
         {
+            Guard.ThrowIfNull(routerControlServiceFactory, nameof(routerControlServiceFactory));
+            Guard.ThrowIfNull(notificationService, out _notificationService, nameof(notificationService));
             Guard.ThrowIfNull(dialogService, out _dialogService, nameof(dialogService));
 
-            _commandManager = new CommandManager(true, RaiseCanExecuteCommands);
+            _commandManager = new CommandManager(false, RaiseCanExecuteCommands);
 
             EnableConnectionCommand = new DelegateCommand(EnableConnectionHandler, _commandManager.CanExecuteCommand);
             DisableConnectionCommand = new DelegateCommand(DisableConnectionHandler, _commandManager.CanExecuteCommand);
             SettingsCommand = new DelegateCommand(SettingsHandler, _commandManager.CanExecuteCommand);
+
+            InitializationAsync(routerControlServiceFactory);
         }
 
         #region IsConnected
@@ -42,6 +52,29 @@ namespace RouterControl.ViewModels
             }
         }
         #endregion
+
+        private async void InitializationAsync(IRouterControlServiceFactory routerControlServiceFactory)
+        {
+            var routerControlService = routerControlServiceFactory.Create();
+            bool connectionState;
+
+            using (_commandManager.GetCommandHelper(false, false))
+            {
+                try
+                {
+                    connectionState = await routerControlService.GetConnectionStateAsync();
+                }
+                catch (Exception ex)
+                {
+                    _notificationService.Notify($"Запрос состояния подключения не был успешно выполнен.\r\nОшибка: {ex.Message}",
+                        "Ошибка выполнения команды", notificationImage: NotificationImages.Error);
+
+                    return;
+                }
+            }
+
+            IsConnected = connectionState;
+        }
 
         private void RaiseCanExecuteCommands()
         {
@@ -102,23 +135,25 @@ namespace RouterControl.ViewModels
                 return _canExecuteCommand;
             }
 
-            public CommandHelper GetCommandHelper(bool enable)
+            public CommandHelper GetCommandHelper(bool enable, bool isRaiseAction = true)
             {
-                return new CommandHelper(enable, this);
+                return new CommandHelper(enable, this, isRaiseAction);
             }
 
-            public readonly ref struct CommandHelper
+            public readonly struct CommandHelper : IDisposable
             {
                 private readonly CommandManager _commandManager;
                 private readonly bool _enable;
 
-                public CommandHelper(bool enable, CommandManager commandManager)
+                public CommandHelper(bool enable, CommandManager commandManager, bool isRaiseAction = true)
                 {
                     _enable = enable;
                     _commandManager = commandManager;
 
                     commandManager._canExecuteCommand = enable;
-                    commandManager._raiseAction();
+
+                    if (isRaiseAction)
+                        commandManager._raiseAction();
                 }
 
                 public void Dispose()
