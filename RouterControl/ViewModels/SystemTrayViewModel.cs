@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using RouterControl.Infrastructure.Constants;
 using RouterControl.Infrastructure.Enums;
 using RouterControl.Infrastructure.Extensions;
+using RouterControl.Infrastructure.Strategies;
 using RouterControl.Infrastructure.Utilities;
 using RouterControl.Interfaces.Infrastructure.Factories;
 using RouterControl.Interfaces.Services;
 using RouterControl.Interfaces.Strategies;
-using RouterControl.Strategies;
 
 namespace RouterControl.ViewModels
 {
@@ -22,8 +23,9 @@ namespace RouterControl.ViewModels
         public DelegateCommand EnableConnectionCommand { get; }
         public DelegateCommand DisableConnectionCommand { get; }
         public DelegateCommand SettingsCommand { get; }
+        public DelegateCommand OpenInterfacesStateCommand { get; }
 
-        public SystemTrayViewModel(IRouterControlServiceFactory routerControlServiceFactory,
+        public SystemTrayViewModel(IRouterServicesFactory routerControlServiceFactory,
                                    INotificationService notificationService,
                                    IDialogService dialogService)
         {
@@ -36,6 +38,7 @@ namespace RouterControl.ViewModels
             EnableConnectionCommand = new DelegateCommand(EnableConnectionHandler, _commandManager.CanExecuteCommand);
             DisableConnectionCommand = new DelegateCommand(DisableConnectionHandler, _commandManager.CanExecuteCommand);
             SettingsCommand = new DelegateCommand(SettingsHandler, _commandManager.CanExecuteCommand);
+            OpenInterfacesStateCommand = new DelegateCommand(OpenInterfacesStateHandler, _commandManager.CanExecuteCommand);
 
             InitializationAsync(routerControlServiceFactory);
         }
@@ -53,9 +56,9 @@ namespace RouterControl.ViewModels
         }
         #endregion
 
-        private async void InitializationAsync(IRouterControlServiceFactory routerControlServiceFactory)
+        private async void InitializationAsync(IRouterServicesFactory routerServicesFactory)
         {
-            var routerControlService = routerControlServiceFactory.Create();
+            var routerControlService = routerServicesFactory.CreateControlService();
             bool connectionState;
 
             using (_commandManager.GetCommandHelper(false, false))
@@ -114,6 +117,14 @@ namespace RouterControl.ViewModels
             using (_commandManager.GetCommandHelper(false))
             {
                 _dialogService.ShowDialog(UiConstants.SettingsViewName);
+            }
+        }
+
+        private void OpenInterfacesStateHandler()
+        {
+            using (_commandManager.GetCommandHelper(false))
+            {
+                _dialogService.ShowDialog(UiConstants.InterfacesStateView);
             }
         }
 

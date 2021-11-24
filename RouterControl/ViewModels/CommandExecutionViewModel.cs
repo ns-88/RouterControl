@@ -15,15 +15,15 @@ namespace RouterControl.ViewModels
 {
     internal class CommandExecutionViewModel : DialogViewModelBase
     {
-        private readonly IRouterControlServiceFactory _routerControlServiceFactory;
+        private readonly IRouterServicesFactory _routerServicesFactory;
         private readonly INotificationService _notificationService;
 
         public ObservableCollection<LogEntryModel> CommandLog { get; }
         
-        public CommandExecutionViewModel(IRouterControlServiceFactory routerControlServiceFactory, INotificationService notificationService)
+        public CommandExecutionViewModel(IRouterServicesFactory routerServicesFactory, INotificationService notificationService)
             : base(string.Empty)
         {
-            Guard.ThrowIfNull(routerControlServiceFactory, out _routerControlServiceFactory, nameof(routerControlServiceFactory));
+            Guard.ThrowIfNull(routerServicesFactory, out _routerServicesFactory, nameof(routerServicesFactory));
             Guard.ThrowIfNull(notificationService, out _notificationService, nameof(notificationService));
 
             CommandLog = new ObservableCollection<LogEntryModel>();
@@ -42,7 +42,7 @@ namespace RouterControl.ViewModels
         {
             bool? connected = null;
             var strategy = parameters.GetValue<ICommandExecutionStrategy>(nameof(ICommandExecutionStrategy));
-            var routerControlService = _routerControlServiceFactory.Create();
+            var routerControlService = _routerServicesFactory.CreateControlService();
             var progress = new Progress<string>(x =>
             {
                 CommandLog.Add(new LogEntryModel(x, DateTime.Now));

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Prism;
 using Prism.Mvvm;
+using RouterControl.Infrastructure.Utilities;
 
 namespace RouterControl.ViewModels
 {
@@ -39,6 +41,19 @@ namespace RouterControl.ViewModels
             {
                 RaisePropertyChanged(propertyName);
             }
+        }
+
+        protected void SetProperty<T>(Func<T> get, Action<T> set, T value, [CallerMemberName] string propertyName = "")
+        {
+            Guard.ThrowIfNull(get, nameof(get));
+            Guard.ThrowIfNull(set, nameof(set));
+
+            if (!EqualityComparer<T>.Default.Equals(get(), value))
+                return;
+
+            set(value);
+
+            RaisePropertyChanged(propertyName);
         }
     }
 }
