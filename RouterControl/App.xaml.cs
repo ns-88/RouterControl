@@ -8,6 +8,7 @@ using RouterControl.Infrastructure.Constants;
 using RouterControl.Infrastructure.Factories;
 using RouterControl.Infrastructure.Providers;
 using RouterControl.Infrastructure.Trackers;
+using RouterControl.Interfaces.Infrastructure;
 using RouterControl.Interfaces.Infrastructure.Factories;
 using RouterControl.Interfaces.Infrastructure.Trackers;
 using RouterControl.Interfaces.Models;
@@ -37,11 +38,14 @@ namespace RouterControl
             // SettingsView
             containerRegistry.RegisterDialog<SettingsView, SettingsViewModel>(UiConstants.SettingsViewName);
 
+            // InterfacesStateView
+            containerRegistry.RegisterDialog<InterfacesStateView, InterfacesStateViewModel>(UiConstants.InterfacesStateView);
+
             // IApiFactory
             containerRegistry.Register<IApiFactory, MicrotikApiFactory>();
 
             // IRouterControlServiceFactory
-            containerRegistry.Register<IRouterControlServiceFactory, RouterControlServiceFactory>();
+            containerRegistry.Register<IRouterServicesFactory, RouterServicesFactory>();
 
             // INotificationService
             containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
@@ -60,6 +64,15 @@ namespace RouterControl
 
             // ISettingsEventTracker
             containerRegistry.RegisterSingleton<ISettingsEventTracker, SettingsEventTracker>();
+
+            // IRouterActionExecutorFactory
+            containerRegistry.Register<IRouterActionExecutorFactory, RouterActionExecutorFactory>();
+            
+            // IUiDispatcherService
+            containerRegistry.RegisterSingleton<IUiDispatcherService, UiDispatcherService>();
+
+            // IConnectionStateNotifierService
+            containerRegistry.Register<IConnectionStateNotifierService, ConnectionStateNotifierService>();
         }
 
         protected override Window CreateShell()

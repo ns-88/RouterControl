@@ -14,6 +14,13 @@ namespace RouterControl.Services
 {
     internal class NotificationService : INotificationService
     {
+        private readonly Dispatcher _dispatcher;
+
+        public NotificationService()
+        {
+            _dispatcher = Application.Current.Dispatcher;
+        }
+
         private static Exception GetException<T>(T value) where T : Enum
         {
             return new InvalidOperationException($"Неизвестное значение перечисления \"{nameof(T)}\". Значение: \"{value}\".");
@@ -65,12 +72,11 @@ namespace RouterControl.Services
         public NotificationResult Notify(string text, string caption, NotificationButtons notificationButton = NotificationButtons.Ok,
             NotificationImages notificationImage = NotificationImages.None)
         {
-            var dispatcher = Dispatcher.CurrentDispatcher;
-            var activeWindow = Application.Current?.Windows.OfType<AdonisWindow>()
-                                                           .FirstOrDefault(x => x.IsLoaded);
-
-            return dispatcher.Invoke(() =>
+            return _dispatcher.Invoke(() =>
             {
+                var activeWindow = Application.Current?.Windows.OfType<AdonisWindow>()
+                                                               .FirstOrDefault(x => x.IsLoaded);
+
                 var messageBoxButton = GetMessageBoxButton(notificationButton);
                 var messageBoxImage = GetMessageBoxImage(notificationImage);
 

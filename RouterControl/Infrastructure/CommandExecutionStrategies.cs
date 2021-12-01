@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using RouterControl.Interfaces.Services;
 using RouterControl.Interfaces.Strategies;
 
-namespace RouterControl.Strategies
+namespace RouterControl.Infrastructure.Strategies
 {
     internal class ConCmdExecutionStrategy : ICommandExecutionStrategy
     {
