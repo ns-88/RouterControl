@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using Prism.Commands;
 using Prism.Services.Dialogs;
-using RouterControl.Infrastructure.Enums;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Services;
-using RouterControl.Models;
 
 namespace RouterControl.ViewModels
 {
+    using Infrastructure.Enums;
+    using Infrastructure.Extensions;
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure.Services;
+    using Models;
+
     internal class SettingsViewModel : DialogViewModelBase
     {
         private readonly ISettingsService _settingsService;
@@ -111,7 +113,7 @@ namespace RouterControl.ViewModels
             }
             catch (Exception ex)
             {
-                _notificationService.Notify($"Сохранение настроек не было выполнено.\r\nОшибка: {ex.Message}",
+                _notificationService.Notify($"Сохранение настроек не было выполнено.\r\n{ex.CreateErrorText()}",
                     "Ошибка сохранения настроек", notificationImage: NotificationImages.Error);
                 return;
             }
@@ -140,7 +142,7 @@ namespace RouterControl.ViewModels
             }
             catch (Exception ex)
             {
-                _notificationService.Notify($"Настройки не были получены.\r\nОшибка: {ex.Message}",
+                _notificationService.Notify($"Настройки не были получены.\r\n{ex.CreateErrorText()}", 
                     "Ошибка", notificationImage: NotificationImages.Error);
                 return;
             }

@@ -1,11 +1,12 @@
-﻿using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Infrastructure;
-using RouterControl.Interfaces.Infrastructure.Factories;
-using RouterControl.Interfaces.Services;
-using RouterControl.Services;
+﻿using RouterControl.Services;
 
 namespace RouterControl.Infrastructure.Factories
 {
+    using Interfaces.Infrastructure;
+    using Interfaces.Infrastructure.Factories;
+    using Interfaces.Services;
+    using Utilities;
+
     internal class RouterServicesFactory : IRouterServicesFactory
     {
         private readonly IRouterActionExecutorFactory _actionExecutorFactory;

@@ -53,7 +53,7 @@ namespace RouterControl.Services
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"Команда проверки доступности IP-адреса не была выполнена.\r\nОшибка: {ex.Message}", ex);
+                    throw new InvalidOperationException("Команда проверки доступности IP-адреса не была выполнена.", ex);
                 }
 
                 var currentState = state.Status == IPStatus.Success;
@@ -96,13 +96,13 @@ namespace RouterControl.Services
 
                 return ip;
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
                 throw;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"IP-адрес не был получен.\r\nОшибка: {ex.Message}", ex);
+                throw new InvalidOperationException("IP-адрес не был получен.", ex);
             }
         }
 

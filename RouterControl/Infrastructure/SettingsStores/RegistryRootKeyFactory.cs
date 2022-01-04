@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.Win32;
-using RouterControl.Infrastructure.Utilities;
 
 namespace RouterControl.Infrastructure.SettingsStores
 {
+    using Utilities;
+
     internal class RegistryRootKeyFactory
     {
         private readonly bool _onlyOpen;

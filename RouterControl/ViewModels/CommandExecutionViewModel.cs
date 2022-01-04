@@ -2,17 +2,18 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Prism.Services.Dialogs;
-using RouterControl.Infrastructure.Constants;
-using RouterControl.Infrastructure.Enums;
-using RouterControl.Infrastructure.Extensions;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Infrastructure.Factories;
-using RouterControl.Interfaces.Services;
-using RouterControl.Interfaces.Strategies;
-using RouterControl.Models;
 
 namespace RouterControl.ViewModels
 {
+    using Infrastructure.Constants;
+    using Infrastructure.Enums;
+    using Infrastructure.Extensions;
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure.Factories;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Strategies;
+    using Models;
+
     internal class CommandExecutionViewModel : DialogViewModelBase
     {
         private readonly IRouterServicesFactory _routerServicesFactory;
@@ -56,7 +57,7 @@ namespace RouterControl.ViewModels
             }
             catch (Exception ex)
             {
-                _notificationService.Notify(ex.Message, "Ошибка выполнения команды", notificationImage: NotificationImages.Error);
+                _notificationService.Notify(ex.CreateErrorText(), "Ошибка выполнения команды", notificationImage: NotificationImages.Error);
             }
 
             await Task.Delay(2000);

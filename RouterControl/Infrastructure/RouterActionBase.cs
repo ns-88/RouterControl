@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using MikroTikMiniApi.Interfaces;
 using MikroTikMiniApi.Interfaces.Commands;
 using MikroTikMiniApi.Interfaces.Sentences;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.RouterActions;
 
 namespace RouterControl.Infrastructure.RouterActions
 {
+    using Interfaces.Models;
+    using Interfaces.RouterActions;
+
     internal abstract class RouterActionBase : IRouterAction
     {
         protected static async Task ExecuteCommandAsync(IRouterApi routerApi, IApiCommand command, IProgress<string>? progress)
@@ -22,7 +23,7 @@ namespace RouterControl.Infrastructure.RouterActions
             {
                 progress?.Report("Ошибка выполнения команды.");
 
-                throw new InvalidOperationException($"Команда не была выполнена.\r\nОшибка: {ex.Message}", ex);
+                throw new InvalidOperationException("Команда не была выполнена.", ex);
             }
 
             if (response is IApiDoneSentence)
