@@ -1,9 +1,10 @@
 ﻿using System;
 using Prism.Services.Dialogs;
-using RouterControl.Infrastructure.Utilities;
 
 namespace RouterControl.Infrastructure.Extensions
 {
+    using Utilities;
+
     internal static class DialogServiceExtension
     {
         public static void ShowDialog(this IDialogService dialogService, string name, string paramName, object paramValue, Action<IDialogResult> callback)

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Net;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Services;
 
 #nullable disable
 
 namespace RouterControl.Models
 {
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Models;
+
     internal class SettingsModel : IProgramSettings
     {
         private readonly IPEndPoint _routerAddress;

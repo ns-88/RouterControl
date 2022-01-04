@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RouterControl.Interfaces.Services;
-using RouterControl.Interfaces.Strategies;
 
 namespace RouterControl.Infrastructure.Strategies
 {
+    using Interfaces.Services;
+    using Interfaces.Strategies;
+
     internal class ConCmdExecutionStrategy : ICommandExecutionStrategy
     {
         public bool IsEnabled { get; }
@@ -13,7 +14,7 @@ namespace RouterControl.Infrastructure.Strategies
 
         public Task InvokeAsync(IRouterControlService routerControlService, IProgress<string> progress)
         {
-            return routerControlService.ChangeConnectionStateAsync(IsEnabled, progress);
+            return routerControlService.ChangeInterfacesStateAsync(IsEnabled, progress);
         }
     }
 }

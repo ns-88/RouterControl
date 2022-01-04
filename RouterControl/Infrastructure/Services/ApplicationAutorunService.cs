@@ -1,10 +1,11 @@
 ﻿using System;
-using RouterControl.Infrastructure.SettingsStores;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Services;
 
-namespace RouterControl.Services
+namespace RouterControl.Infrastructure.Services
 {
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Models;
+    using SettingsStores;
+
     internal class ApplicationAutorunService : IObserver<ISettingsItem>
     {
         private static string GetBaseDirectory()
@@ -42,7 +43,7 @@ namespace RouterControl.Services
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Не удалось применить настройки автозапуска приложения.\r\nОшибка: {ex.Message}");
+                throw new InvalidOperationException("Не удалось применить настройки автозапуска приложения.", ex);
             }
         }
 

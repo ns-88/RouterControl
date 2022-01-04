@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RouterControl.Interfaces.Services
+namespace RouterControl.Interfaces.Infrastructure.Services
 {
     internal interface IUiDispatcherService
     {

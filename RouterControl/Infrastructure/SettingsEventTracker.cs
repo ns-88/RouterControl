@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Infrastructure.Trackers;
-using RouterControl.Interfaces.Services;
 
 namespace RouterControl.Infrastructure.Trackers
 {
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Infrastructure.Trackers;
+    using Utilities;
+
     internal class SettingsEventTracker : ISettingsEventTracker
     {
         private readonly IReadOnlySettingsService _settingsService;

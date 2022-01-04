@@ -3,15 +3,16 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using AdonisUI.Controls;
-using RouterControl.Infrastructure.Enums;
-using RouterControl.Interfaces.Services;
 using MessageBox = AdonisUI.Controls.MessageBox;
 using MessageBoxButton = AdonisUI.Controls.MessageBoxButton;
 using MessageBoxImage = AdonisUI.Controls.MessageBoxImage;
 using MessageBoxResult = AdonisUI.Controls.MessageBoxResult;
 
-namespace RouterControl.Services
+namespace RouterControl.Infrastructure.Services
 {
+    using Enums;
+    using Interfaces.Infrastructure.Services;
+
     internal class NotificationService : INotificationService
     {
         private readonly Dispatcher _dispatcher;

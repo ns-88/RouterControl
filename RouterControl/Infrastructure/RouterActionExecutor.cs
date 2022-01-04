@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using MikroTikMiniApi.Interfaces.Factories;
 using MikroTikMiniApi.Interfaces.Networking;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Executors;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.RouterActions;
-using RouterControl.Interfaces.Services;
 
 namespace RouterControl.Infrastructure
 {
+    using Interfaces.Executors;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Models;
+    using Interfaces.RouterActions;
+    using Utilities;
+
     internal class RouterActionExecutor : IRouterActionExecutor
     {
         private readonly IApiFactory _apiFactory;
@@ -42,7 +43,7 @@ namespace RouterControl.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Пароль пользователя не был получен.\r\nОшибка: {ex.Message}", ex);
+                throw new InvalidOperationException("Пароль пользователя не был получен.", ex);
             }
         }
 
@@ -62,7 +63,7 @@ namespace RouterControl.Infrastructure
                     }
                     catch (Exception ex)
                     {
-                        throw new InvalidOperationException($"Объект подключения не был создан.\r\nОшибка: {ex.Message}", ex);
+                        throw new InvalidOperationException("Объект подключения не был создан.", ex);
                     }
 
                     //Подключение к роутеру.
@@ -76,7 +77,7 @@ namespace RouterControl.Infrastructure
                     {
                         progress?.Report("Ошибка подключения к роутеру.");
 
-                        throw new InvalidOperationException($"Подключение не было устновлено.\r\nОшибка: {ex.Message}", ex);
+                        throw new InvalidOperationException("Подключение не было устновлено.", ex);
                     }
 
                     progress?.Report("Подключение установлено.");
@@ -94,7 +95,7 @@ namespace RouterControl.Infrastructure
                     {
                         progress?.Report("Ошибка аутентификации пользователя.");
 
-                        throw new InvalidOperationException($"Аутентификация пользователя не была произведена.\r\nОшибка: {ex.Message}", ex);
+                        throw new InvalidOperationException("Аутентификация пользователя не была произведена.", ex);
                     }
 
                     progress?.Report("Аутентификация выполнена.");
@@ -113,7 +114,7 @@ namespace RouterControl.Infrastructure
                     {
                         progress?.Report("Ошибка выхода из системы.");
 
-                        throw new InvalidOperationException($"Выход из системы не был произведен.\r\nОшибка: {ex.Message}", ex);
+                        throw new InvalidOperationException("Выход из системы не был произведен.", ex);
                     }
 
                     progress?.Report("Выход из системы произведен.");

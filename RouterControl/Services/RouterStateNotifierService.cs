@@ -9,16 +9,16 @@ using MikroTikMiniApi.Interfaces;
 using MikroTikMiniApi.Interfaces.Factories;
 using MikroTikMiniApi.Interfaces.Sentences;
 using MikroTikMiniApi.Models.Api;
-using RouterControl.Infrastructure.Resources;
-using RouterControl.Infrastructure.RouterActions;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Infrastructure;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Services;
 
 namespace RouterControl.Services
 {
-    using Observers = Dictionary<string, IObserver<IRouterInterface>>;
+    using Infrastructure.Resources;
+    using Infrastructure.RouterActions;
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure;
+    using Interfaces.Models;
+    using Interfaces.Services;
+    using Observers = Dictionary<string, IObserver<Interfaces.Models.IRouterInterface>>;
 
     internal class RouterStateNotifierService : IRouterStateNotifierService
     {
@@ -58,7 +58,7 @@ namespace RouterControl.Services
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Обновление данных интерфейсов роутера не было завершено.\r\nОшибка: {ex.Message}", ex);
+                throw new InvalidOperationException("Обновление данных интерфейсов роутера не было завершено.", ex);
             }
             finally
             {
@@ -79,7 +79,7 @@ namespace RouterControl.Services
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Список интерфейсов роутера не был получен.\r\nОшибка: {ex.Message}", ex);
+                throw new InvalidOperationException("Список интерфейсов роутера не был получен.", ex);
             }
         }
 
@@ -231,7 +231,7 @@ namespace RouterControl.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    throw new InvalidOperationException($"Команда не была выполнена.\r\nОшибка: {ex.Message}", ex);
+                                    throw new InvalidOperationException("Команда не была выполнена.", ex);
                                 }
 
                                 try
@@ -261,7 +261,7 @@ namespace RouterControl.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    throw new InvalidOperationException($"IP-адрес для PPPoE интерфейса \"{name}\" не был получен.\r\nОшибка: {ex.Message}", ex);
+                                    throw new InvalidOperationException($"IP-адрес для PPPoE интерфейса \"{name}\" не был получен.", ex);
                                 }
                             }
                             else
@@ -444,11 +444,13 @@ namespace RouterControl.Services
 
             public override async Task ExecuteAsync(IRouterApi routerApi, IProgramSettings settings, IProgress<string>? progress)
             {
+                var timeout = TimeSpan.FromSeconds(1);
+
                 while (true)
                 {
                     try
                     {
-                        await Task.Delay(TimeSpan.FromSeconds(1), _token).ConfigureAwait(false);
+                        await Task.Delay(timeout, _token).ConfigureAwait(false);
                     }
                     catch (TaskCanceledException)
                     {

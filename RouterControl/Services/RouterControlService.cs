@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using MikroTikMiniApi.Commands;
 using MikroTikMiniApi.Interfaces;
 using MikroTikMiniApi.Models.Api;
-using RouterControl.Infrastructure.RouterActions;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Infrastructure;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Services;
 
 namespace RouterControl.Services
 {
+    using Infrastructure.RouterActions;
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure;
+    using Interfaces.Models;
+    using Interfaces.Services;
+
     internal class RouterControlService : IRouterControlService
     {
         private readonly IRouterActionExecutorFactory _routerActionExecutorFactory;
@@ -21,17 +22,17 @@ namespace RouterControl.Services
             Guard.ThrowIfNull(routerActionExecutorFactory, out _routerActionExecutorFactory, nameof(routerActionExecutorFactory));
         }
 
-        public Task ChangeConnectionStateAsync(bool enable, IProgress<string> progress)
+        public Task ChangeInterfacesStateAsync(bool enable, IProgress<string> progress)
         {
             Guard.ThrowIfNull(progress, nameof(progress));
 
             var executor = _routerActionExecutorFactory.Create();
-            var action = new RouterChangeInterfaceStateAction(enable);
+            var action = new RouterChangeInterfacesStateAction(enable);
             
             return executor.ExecuteActionAsync(action, progress);
         }
 
-        public async ValueTask<bool> GetConnectionStateAsync()
+        public async ValueTask<bool> GetInterfacesStateAsync()
         {
             var executor = _routerActionExecutorFactory.Create();
             var action = new RequestInterfacesStatusAction(executor.Settings);
@@ -46,11 +47,11 @@ namespace RouterControl.Services
 
         #region Nested types
 
-        private class RouterChangeInterfaceStateAction : RouterActionBase
+        private class RouterChangeInterfacesStateAction : RouterActionBase
         {
             private readonly bool _enable;
 
-            public RouterChangeInterfaceStateAction(bool enable)
+            public RouterChangeInterfacesStateAction(bool enable)
             {
                 _enable = enable;
             }
@@ -113,7 +114,7 @@ namespace RouterControl.Services
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"Команда не была выполнена.\r\nОшибка: {ex.Message}", ex);
+                    throw new InvalidOperationException("Команда не была выполнена.", ex);
                 }
 
                 if (interfaces is not { Count: 2 } || interfaces[0].IsDisabled == null || interfaces[1].IsDisabled == null)

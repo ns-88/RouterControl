@@ -1,12 +1,13 @@
 ﻿using MikroTikMiniApi.Interfaces.Factories;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Executors;
-using RouterControl.Interfaces.Infrastructure;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Services;
 
 namespace RouterControl.Infrastructure.Factories
 {
+    using Interfaces.Executors;
+    using Interfaces.Infrastructure;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Models;
+    using Utilities;
+
     internal class RouterActionExecutorFactory : IRouterActionExecutorFactory
     {
         private readonly IApiFactory _apiFactory;

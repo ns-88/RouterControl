@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
-using RouterControl.Infrastructure.Constants;
-using RouterControl.Infrastructure.Enums;
-using RouterControl.Infrastructure.Extensions;
-using RouterControl.Infrastructure.Strategies;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Infrastructure.Factories;
-using RouterControl.Interfaces.Services;
-using RouterControl.Interfaces.Strategies;
 
 namespace RouterControl.ViewModels
 {
+    using Infrastructure.Constants;
+    using Infrastructure.Enums;
+    using Infrastructure.Extensions;
+    using Infrastructure.Strategies;
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure.Factories;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Strategies;
+
     internal class SystemTrayViewModel : BindableBase
     {
         private readonly INotificationService _notificationService;
@@ -65,11 +65,11 @@ namespace RouterControl.ViewModels
             {
                 try
                 {
-                    connectionState = await routerControlService.GetConnectionStateAsync();
+                    connectionState = await routerControlService.GetInterfacesStateAsync();
                 }
                 catch (Exception ex)
                 {
-                    _notificationService.Notify($"Запрос состояния подключения не был успешно выполнен.\r\nОшибка: {ex.Message}",
+                    _notificationService.Notify($"Запрос состояния подключения не был успешно выполнен.\r\n{ex.CreateErrorText()}",
                         "Ошибка выполнения команды", notificationImage: NotificationImages.Error);
 
                     return;

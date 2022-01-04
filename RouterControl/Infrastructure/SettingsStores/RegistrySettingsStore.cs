@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Win32;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.SettingsStores;
 
 namespace RouterControl.Infrastructure.SettingsStores
 {
+    using Interfaces.SettingsStores;
+    using Utilities;
+
     internal class RegistrySettingsStore : IReadableSettingsStore, IWriteableSettingsStore
     {
         private readonly RegistryRootKeyFactory _rootKeyFactory;
@@ -119,7 +120,7 @@ namespace RouterControl.Infrastructure.SettingsStores
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Не удалось удалить значение. Ключ реестра: \"{collectionName}\", свойство: \"{propertyName}\".\r\nОшибка: {ex.Message}", ex);
+                throw new InvalidOperationException($"Не удалось удалить значение. Ключ реестра: \"{collectionName}\", свойство: \"{propertyName}\".", ex);
             }
         }
         #endregion

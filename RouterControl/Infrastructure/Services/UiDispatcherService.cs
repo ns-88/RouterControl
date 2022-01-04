@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Services;
 
-namespace RouterControl.Services
+namespace RouterControl.Infrastructure.Services
 {
+    using Interfaces.Infrastructure.Services;
+    using Utilities;
+
     internal class UiDispatcherService : IUiDispatcherService
     {
         private readonly Dispatcher _dispatcher;

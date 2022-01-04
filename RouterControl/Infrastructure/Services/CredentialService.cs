@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Services;
 
-namespace RouterControl.Services
+namespace RouterControl.Infrastructure.Services
 {
+    using Interfaces.Infrastructure.Services;
+    using Utilities;
+
     internal class CredentialService : ICredentialService
     {
         private const string DpapiEntropy = "h3EvqPl91@mftxrkpS!WKc";

@@ -1,10 +1,12 @@
 ﻿using System;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Services;
 
 namespace RouterControl.ViewModels
 {
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Models;
+    using Interfaces.Services;
+
     internal class RouterInterfaceViewModel : ViewModelBase, IDisposable
     {
         private readonly IDisposable? _subscriptionToken;

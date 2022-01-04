@@ -4,10 +4,11 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using Prism;
 using Prism.Mvvm;
-using RouterControl.Infrastructure.Utilities;
 
 namespace RouterControl.ViewModels
 {
+    using Infrastructure.Utilities;
+
     internal class ViewModelBase : BindableBase, IActiveAware
     {
         public event EventHandler? IsActiveChanged;
@@ -48,7 +49,7 @@ namespace RouterControl.ViewModels
             Guard.ThrowIfNull(get, nameof(get));
             Guard.ThrowIfNull(set, nameof(set));
 
-            if (!EqualityComparer<T>.Default.Equals(get(), value))
+            if (EqualityComparer<T>.Default.Equals(get(), value))
                 return;
 
             set(value);

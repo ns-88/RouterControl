@@ -4,24 +4,28 @@ using Hardcodet.Wpf.TaskbarNotification;
 using MikroTikMiniApi.Factories;
 using MikroTikMiniApi.Interfaces.Factories;
 using Prism.Ioc;
-using RouterControl.Infrastructure.Constants;
-using RouterControl.Infrastructure.Factories;
-using RouterControl.Infrastructure.Providers;
-using RouterControl.Infrastructure.Trackers;
-using RouterControl.Interfaces.Infrastructure;
-using RouterControl.Interfaces.Infrastructure.Factories;
-using RouterControl.Interfaces.Infrastructure.Trackers;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Providers;
-using RouterControl.Interfaces.Services;
-using RouterControl.Services;
-using RouterControl.ViewModels;
-using RouterControl.Views;
 using MessageBox = AdonisUI.Controls.MessageBox;
 using MessageBoxImage = AdonisUI.Controls.MessageBoxImage;
 
 namespace RouterControl
 {
+    using Infrastructure.Constants;
+    using Infrastructure.Extensions;
+    using Infrastructure.Factories;
+    using Infrastructure.Providers;
+    using Infrastructure.Services;
+    using Infrastructure.Trackers;
+    using Interfaces.Infrastructure;
+    using Interfaces.Infrastructure.Factories;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Infrastructure.Trackers;
+    using Interfaces.Models;
+    using Interfaces.Providers;
+    using Interfaces.Services;
+    using Services;
+    using ViewModels;
+    using Views;
+
     public partial class App
     {
         private TaskbarIcon? _taskbarIcon;
@@ -104,7 +108,7 @@ namespace RouterControl
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Запуск приложения не был успешно произведен.\r\nОшибка: {ex.Message}", icon: MessageBoxImage.Error);
+                MessageBox.Show($"Запуск приложения не был успешно произведен.\r\n{ex.CreateErrorText()}", icon: MessageBoxImage.Error);
                 Environment.Exit(-1);
             }
         }
