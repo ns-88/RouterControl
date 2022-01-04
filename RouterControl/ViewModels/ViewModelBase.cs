@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Prism;
 using Prism.Mvvm;
 
 namespace RouterControl.ViewModels
 {
+    using Infrastructure.Utilities;
+
     internal class ViewModelBase : BindableBase, IActiveAware
     {
         public event EventHandler? IsActiveChanged;
@@ -39,6 +42,19 @@ namespace RouterControl.ViewModels
             {
                 RaisePropertyChanged(propertyName);
             }
+        }
+
+        protected void SetProperty<T>(Func<T> get, Action<T> set, T value, [CallerMemberName] string propertyName = "")
+        {
+            Guard.ThrowIfNull(get, nameof(get));
+            Guard.ThrowIfNull(set, nameof(set));
+
+            if (EqualityComparer<T>.Default.Equals(get(), value))
+                return;
+
+            set(value);
+
+            RaisePropertyChanged(propertyName);
         }
     }
 }

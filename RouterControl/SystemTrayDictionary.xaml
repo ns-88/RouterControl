@@ -16,5 +16,6 @@
     <tb:TaskbarIcon x:Key="{x:Static uiConstants:UiConstants.TaskbarIconSystemTrayName}"
                     IconSource="{Binding IsConnected, Mode=OneWay, Converter={StaticResource BoolToIconSourceConverter}}"
                     MenuActivation="RightClick"
+                    DoubleClickCommand="{Binding OpenInterfacesStateCommand, Mode=OneWay}"
                     ContextMenu="{StaticResource ContextMenuSystemTray}"/>
 </ResourceDictionary>

@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using Prism.Commands;
 using Prism.Services.Dialogs;
-using RouterControl.Infrastructure.Enums;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Services;
-using RouterControl.Models;
 
 namespace RouterControl.ViewModels
 {
+    using Infrastructure.Enums;
+    using Infrastructure.Extensions;
+    using Infrastructure.Utilities;
+    using Interfaces.Infrastructure.Services;
+    using Models;
+
     internal class SettingsViewModel : DialogViewModelBase
     {
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
-        private readonly SettingsModel _settingsModel;
+        private readonly SettingsModel _model;
         private readonly CommandManager _commandManager;
 
         public DelegateCommand SaveCommand { get; }
@@ -27,7 +29,7 @@ namespace RouterControl.ViewModels
             Guard.ThrowIfNull(credentialService, nameof(credentialService));
             Guard.ThrowIfNull(notificationService, out _notificationService, nameof(notificationService));
 
-            _settingsModel = new SettingsModel(credentialService);
+            _model = new SettingsModel(credentialService);
             _commandManager = new CommandManager(false);
 
             SaveCommand = new DelegateCommand(SaveHandler, _commandManager.CanExecuteCommand);
@@ -36,24 +38,16 @@ namespace RouterControl.ViewModels
         #region UserName
         public string? UserName
         {
-            get => _settingsModel.UserName;
-            set
-            {
-                _settingsModel.UserName = value;
-                RaisePropertyChanged();
-            }
+            get => _model.UserName;
+            set => SetProperty(() => _model.UserName, x => _model.UserName = x, value);
         }
         #endregion
 
         #region UserPassword
         public string? UserPassword
         {
-            get => _settingsModel.UserPassword;
-            set
-            {
-                _settingsModel.UserPassword = value;
-                RaisePropertyChanged();
-            }
+            get => _model.UserPassword;
+            set => SetProperty(() => _model.UserPassword, x => _model.UserPassword = x, value);
         }
 
         #endregion
@@ -61,60 +55,41 @@ namespace RouterControl.ViewModels
         #region RouterIpAddress
         public string? RouterIpAddress
         {
-            get => _settingsModel.RouterIpAddress;
-            set
-            {
-                _settingsModel.RouterIpAddress = value;
-                RaisePropertyChanged();
-            }
+            get => _model.RouterIpAddress;
+            set => SetProperty(() => _model.RouterIpAddress, x => _model.RouterIpAddress = x, value);
         }
         #endregion
 
         #region RouterPort
         public string? RouterPort
         {
-            get => _settingsModel.RouterPort;
-            set
-            {
-                _settingsModel.RouterPort = value;
-                RaisePropertyChanged();
-            }
+            get => _model.RouterPort;
+            set => SetProperty(() => _model.RouterPort, x => _model.RouterPort = x, value);
         }
         #endregion
 
         #region PppoeInterface
         public string? PppoeInterface
         {
-            get => _settingsModel.PppoeInterface;
-            set
-            {
-                _settingsModel.PppoeInterface = value;
-                RaisePropertyChanged();
-            }
+            get => _model.PppoeInterface;
+            set => SetProperty(() => _model.PppoeInterface, x => _model.PppoeInterface = x, value);
         }
         #endregion
 
         #region EthernetInterface
         public string? EthernetInterface
         {
-            get => _settingsModel.EthernetInterface;
-            set
-            {
-                _settingsModel.EthernetInterface = value;
-                RaisePropertyChanged();
-            }
+            get => _model.EthernetInterface;
+            set => SetProperty(() => _model.EthernetInterface, x => _model.EthernetInterface = x, value);
+
         }
         #endregion
 
         #region IsApplicationAutorun
         public bool IsApplicationAutorun
         {
-            get => _settingsModel.IsApplicationAutorun;
-            set
-            {
-                _settingsModel.IsApplicationAutorun = value;
-                RaisePropertyChanged();
-            }
+            get => _model.IsApplicationAutorun;
+            set => SetProperty(() => _model.IsApplicationAutorun, x => _model.IsApplicationAutorun = x, value);
         }
         #endregion
 
@@ -125,7 +100,7 @@ namespace RouterControl.ViewModels
 
         private void SaveHandler()
         {
-            if (!_settingsModel.CheckModel())
+            if (!_model.CheckModel())
             {
                 _notificationService.Notify("Не все поля заполнены. Проверьте правильность ввода.",
                     "Ошибка сохранения настроек", notificationImage: NotificationImages.Warning);
@@ -134,11 +109,11 @@ namespace RouterControl.ViewModels
 
             try
             {
-                _settingsService.SaveProgramSettings(_settingsModel.ToEntity());
+                _settingsService.SaveProgramSettings(_model.ToEntity());
             }
             catch (Exception ex)
             {
-                _notificationService.Notify($"Сохранение настроек не было выполнено.\r\nОшибка: {ex.Message}",
+                _notificationService.Notify($"Сохранение настроек не было выполнено.\r\n{ex.CreateErrorText()}",
                     "Ошибка сохранения настроек", notificationImage: NotificationImages.Error);
                 return;
             }
@@ -163,16 +138,16 @@ namespace RouterControl.ViewModels
         {
             try
             {
-                _settingsModel.FromEntity(_settingsService.ProgramSettings);
+                _model.FromEntity(_settingsService.ProgramSettings);
             }
             catch (Exception ex)
             {
-                _notificationService.Notify($"Настройки не были получены.\r\nОшибка: {ex.Message}",
+                _notificationService.Notify($"Настройки не были получены.\r\n{ex.CreateErrorText()}", 
                     "Ошибка", notificationImage: NotificationImages.Error);
                 return;
             }
 
-            _commandManager.SetCanExecuteCommand(_settingsModel.IsModelFilled);
+            _commandManager.SetCanExecuteCommand(_model.IsModelFilled);
 
             RaisePropertiesChanged();
             RaiseCanExecuteCommand();

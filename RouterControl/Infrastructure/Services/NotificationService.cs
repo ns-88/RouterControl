@@ -3,17 +3,25 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using AdonisUI.Controls;
-using RouterControl.Infrastructure.Enums;
-using RouterControl.Interfaces.Services;
 using MessageBox = AdonisUI.Controls.MessageBox;
 using MessageBoxButton = AdonisUI.Controls.MessageBoxButton;
 using MessageBoxImage = AdonisUI.Controls.MessageBoxImage;
 using MessageBoxResult = AdonisUI.Controls.MessageBoxResult;
 
-namespace RouterControl.Services
+namespace RouterControl.Infrastructure.Services
 {
+    using Enums;
+    using Interfaces.Infrastructure.Services;
+
     internal class NotificationService : INotificationService
     {
+        private readonly Dispatcher _dispatcher;
+
+        public NotificationService()
+        {
+            _dispatcher = Application.Current.Dispatcher;
+        }
+
         private static Exception GetException<T>(T value) where T : Enum
         {
             return new InvalidOperationException($"Неизвестное значение перечисления \"{nameof(T)}\". Значение: \"{value}\".");
@@ -65,12 +73,11 @@ namespace RouterControl.Services
         public NotificationResult Notify(string text, string caption, NotificationButtons notificationButton = NotificationButtons.Ok,
             NotificationImages notificationImage = NotificationImages.None)
         {
-            var dispatcher = Dispatcher.CurrentDispatcher;
-            var activeWindow = Application.Current?.Windows.OfType<AdonisWindow>()
-                                                           .FirstOrDefault(x => x.IsLoaded);
-
-            return dispatcher.Invoke(() =>
+            return _dispatcher.Invoke(() =>
             {
+                var activeWindow = Application.Current?.Windows.OfType<AdonisWindow>()
+                                                               .FirstOrDefault(x => x.IsLoaded);
+
                 var messageBoxButton = GetMessageBoxButton(notificationButton);
                 var messageBoxImage = GetMessageBoxImage(notificationImage);
 

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
 using Prism;
@@ -28,7 +29,7 @@ namespace RouterControl.Infrastructure.Behaviors
             SetIsActiveState(AssociatedObject, true);
         }
 
-        private void AssociatedObjectClosed(object? sender, System.EventArgs e)
+        private void AssociatedObjectClosed(object? sender, EventArgs e)
         {
             SetIsActiveState(AssociatedObject, false);
 

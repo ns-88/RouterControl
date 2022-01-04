@@ -1,7 +1,7 @@
 ﻿using System;
 using RouterControl.Interfaces.Models;
 
-namespace RouterControl.Interfaces.Services
+namespace RouterControl.Interfaces.Infrastructure.Services
 {
     internal interface IReadOnlySettingsService
     {

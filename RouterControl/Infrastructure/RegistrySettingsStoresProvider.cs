@@ -1,9 +1,9 @@
-﻿using RouterControl.Infrastructure.SettingsStores;
-using RouterControl.Interfaces.Providers;
-using RouterControl.Interfaces.SettingsStores;
-
-namespace RouterControl.Infrastructure.Providers
+﻿namespace RouterControl.Infrastructure.Providers
 {
+    using Interfaces.Providers;
+    using Interfaces.SettingsStores;
+    using SettingsStores;
+
     internal class RegistrySettingsStoresProvider : ISettingsStoresProvider
     {
         public IReadableSettingsStore ReadableSettingsStore { get; }

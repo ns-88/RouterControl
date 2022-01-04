@@ -5,6 +5,7 @@ namespace RouterControl.Interfaces.Services
 {
     internal interface IRouterControlService
     {
-        Task ChangeConnectionStateAsync(bool enable, IProgress<string> progress);
+        Task ChangeInterfacesStateAsync(bool enable, IProgress<string> progress);
+        ValueTask<bool> GetInterfacesStateAsync();
     }
 }

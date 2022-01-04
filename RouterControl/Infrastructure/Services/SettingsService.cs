@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-using RouterControl.Infrastructure.Exceptions;
-using RouterControl.Infrastructure.Utilities;
-using RouterControl.Interfaces.Models;
-using RouterControl.Interfaces.Providers;
-using RouterControl.Interfaces.Services;
-using RouterControl.Models;
 
-namespace RouterControl.Services
+namespace RouterControl.Infrastructure.Services
 {
+    using Exceptions;
+    using Interfaces.Infrastructure.Services;
+    using Interfaces.Models;
+    using Interfaces.Providers;
+    using Models;
+    using Utilities;
+
     internal class SettingsService : ISettingsService
     {
         public event EventHandler<SettingsChangedArgs>? Changed;
@@ -155,7 +156,7 @@ namespace RouterControl.Services
                     }
                     catch (Exception ex)
                     {
-                        throw new SettingsSaveLoadFaultException($"Сохранение настроек \"{_settingsName}\" не было завершено.\r\nОшибка: {ex.Message}", ex);
+                        throw new SettingsSaveLoadFaultException($"Сохранение настроек \"{_settingsName}\" не было завершено.", ex);
                     }
                 }
             }
@@ -177,7 +178,7 @@ namespace RouterControl.Services
                     }
                     catch (Exception ex)
                     {
-                        throw new SettingsSaveLoadFaultException($"Загрузка настроек \"{_settingsName}\" не была завершена успешно.\r\nОшибка: {ex.Message}", ex);
+                        throw new SettingsSaveLoadFaultException($"Загрузка настроек \"{_settingsName}\" не была завершена успешно.", ex);
                     }
                 }
             }
